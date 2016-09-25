@@ -7,10 +7,13 @@ import (
 
 	"github.com/rafaeljesus/event-tracker/api/events"
 	"github.com/rafaeljesus/event-tracker/api/healthz"
+	"github.com/rafaeljesus/event-tracker/db"
 	"os"
 )
 
 func main() {
+	db.Connect()
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
