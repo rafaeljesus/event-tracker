@@ -19,5 +19,4 @@ func Connect() {
 	}
 
 	Es = client
-	return
 }
