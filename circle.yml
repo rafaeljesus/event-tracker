@@ -1,0 +1,16 @@
+machine:
+  services:
+    - docker
+
+test:
+  override:
+    - go test -v -race ./api/...
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - docker build -t rafaeljesus/event-tracker .
+      - docker login -e $DOCKERHUB_EMAIL -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+      - docker tag rafaeljesus/event-tracker rafaeljesus/event-tracker:master
+      - docker push rafaeljesus/event-tracker:master
