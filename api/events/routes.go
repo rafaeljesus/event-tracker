@@ -1,7 +1,9 @@
 package events
 
 import (
+	"encoding/json"
 	"github.com/labstack/echo"
+	"github.com/rafaeljesus/event-tracker/lib/kafka"
 	"github.com/rafaeljesus/event-tracker/models"
 	"net/http"
 )
@@ -17,7 +19,12 @@ func Create(c echo.Context) error {
 		return err
 	}
 
-	if err := event.Create(); err != nil {
+	msg, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+
+	if err := kafka.Enqueue("events", msg); err != nil {
 		return err
 	}
 

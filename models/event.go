@@ -1,19 +1,21 @@
 package models
 
 import (
-	"github.com/rafaeljesus/event-tracker/db"
+	"encoding/json"
+	"github.com/rafaeljesus/event-tracker/lib/elastic"
 	"time"
 )
 
 type Event struct {
-	Cid       int       `json:"cid"`
-	Name      string    `json:"name"`
-	Status    string    `json:"status"`
-	Timestamp time.Time `json:"timestamp,omitempty"`
+	Cid       int             `json:"cid"`
+	Name      string          `json:"name"`
+	Status    string          `json:"status"`
+	Payload   json.RawMessage `json:"payload"`
+	Timestamp time.Time       `json:"timestamp,omitempty"`
 }
 
 func (e *Event) Create() error {
-	_, err := db.Es.Index().
+	_, err := elastic.Es.Index().
 		Index("events").
 		Type("event").
 		BodyJson(e).

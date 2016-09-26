@@ -1,4 +1,4 @@
-package db
+package elastic
 
 import (
 	"gopkg.in/olivere/elastic.v3"
@@ -7,7 +7,7 @@ import (
 
 var Es *elastic.Client
 
-func Connect() {
+func ElasticConnect() {
 	client, err := elastic.NewClient()
 	if err != nil {
 		panic(err)

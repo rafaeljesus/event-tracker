@@ -4,15 +4,19 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/fasthttp"
 	"github.com/labstack/echo/middleware"
-
 	"github.com/rafaeljesus/event-tracker/api/events"
 	"github.com/rafaeljesus/event-tracker/api/healthz"
-	"github.com/rafaeljesus/event-tracker/db"
+	"github.com/rafaeljesus/event-tracker/lib/elastic"
+	"github.com/rafaeljesus/event-tracker/lib/kafka"
+	"github.com/rafaeljesus/event-tracker/listener"
 	"os"
 )
 
 func main() {
-	db.Connect()
+	elastic.Connect()
+
+	kafka.Connect()
+	kafka.FromQueue("events", listener.EventCreated)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
