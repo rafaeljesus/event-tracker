@@ -4,6 +4,13 @@
 * A minimal docker container
 * Automatically pushes it to dockerhub if tests pass
 
+Stack
+- Golang
+- Elastic Search
+- Kafka
+- Docker
+
+## Setup
 Env vars
 ```bash
 export EVENT_TRACKER_PORT=3000
