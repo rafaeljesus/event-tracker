@@ -4,17 +4,17 @@
 * A minimal docker container
 * Automatically pushes it to dockerhub if tests pass
 
-Stack
-- Golang
-- Elastic Search
-- Kafka
-- Docker
-
 ## Setup
 Env vars
 ```bash
 export EVENT_TRACKER_PORT=3000
 ```
+
+## Stack
+- Golang
+- Elastic Search
+- Kafka
+- Docker
 
 ## Docker
 This repository has automated image builds on hub.docker.com after successfully building and testing. See the `deployment` section of [circle.yml](circle.yml) for details on how this is done. Note that three environment variables need to be set on CircleCI for the deployment to work:
