@@ -1,3 +1,2 @@
-GOOS=linux bash build
-docker build -t rafaeljesus/event-tracker .
-rm event-tracker
+bash build
+docker build --no-cache --rm -t rafaeljesus/event-tracker .

@@ -8,6 +8,7 @@
 Env vars
 ```bash
 export EVENT_TRACKER_PORT=3000
+export ELASTIC_SEARCH_URL=http://@docker:9200
 ```
 
 ## Stack

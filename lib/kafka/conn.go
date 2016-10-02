@@ -7,7 +7,7 @@ import (
 	"os/signal"
 )
 
-var brokers = []string{"docker:9201"}
+var brokers = []string{"docker:9092"}
 var Producer sarama.AsyncProducer
 var Consumer sarama.Consumer
 

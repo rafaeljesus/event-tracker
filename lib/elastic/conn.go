@@ -3,12 +3,15 @@ package elastic
 import (
 	"gopkg.in/olivere/elastic.v3"
 	"log"
+	"os"
 )
 
 var Es *elastic.Client
 
-func ElasticConnect() {
-	client, err := elastic.NewClient()
+func Connect() {
+	url := elastic.SetURL(os.Getenv("ELASTIC_SEARCH_URL"))
+	sniff := elastic.SetSniff(false)
+	client, err := elastic.NewClient(sniff, url)
 	if err != nil {
 		panic(err)
 	}

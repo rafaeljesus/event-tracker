@@ -28,9 +28,9 @@ func Create(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, &created{Ok: true})
+	return c.JSON(http.StatusOK, &response{Ok: true})
 }
 
-type created struct {
+type response struct {
 	Ok bool `json:"ok"`
 }
