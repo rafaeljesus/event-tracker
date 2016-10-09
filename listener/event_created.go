@@ -1,10 +1,11 @@
 package listener
 
 import (
-	"github.com/Shopify/sarama"
 	"log"
 )
 
-func EventCreated(message *sarama.ConsumerMessage) {
-	log.Print("Receiving Event Message")
+func EventCreated(payload string) {
+	log.Println("Receiving Event Message", payload)
+
+	return
 }
