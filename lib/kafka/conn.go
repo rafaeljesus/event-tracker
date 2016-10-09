@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"github.com/Shopify/sarama"
+	"log"
 )
 
 var brokers = []string{"localhost:9092"}
@@ -28,15 +29,20 @@ func Enqueue(topic string, msg []byte) error {
 		Value:     sarama.StringEncoder(msg),
 	}
 
-	_, _, err := Producer.SendMessage(message)
-	return err
+	go func(message *sarama.ProducerMessage) {
+		if _, _, err := Producer.SendMessage(message); err != nil {
+			log.Fatalln("Failed to produce message", err)
+		}
+	}(message)
+
+	return nil
 }
 
-func FromQueue(topic string, fn func(string)) error {
+func FromQueue(topic string, fn func([]byte)) error {
 	pc, _ := Consumer.ConsumePartition(topic, 0, sarama.OffsetNewest)
 	go func(pc sarama.PartitionConsumer) {
 		for message := range pc.Messages() {
-			fn(string(message.Value))
+			fn(message.Value)
 		}
 	}(pc)
 
