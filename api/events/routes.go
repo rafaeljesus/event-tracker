@@ -19,12 +19,8 @@ func Create(c echo.Context) error {
 		return err
 	}
 
-	msg, err := json.Marshal(event)
-	if err != nil {
-		return err
-	}
-
-	if err := kafka.Enqueue("events", msg); err != nil {
+	payload, _ := json.Marshal(event)
+	if err := kafka.Enqueue("events", payload); err != nil {
 		return err
 	}
 
