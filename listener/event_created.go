@@ -12,4 +12,8 @@ func EventCreated(message []byte) {
 	if err := json.Unmarshal(message, &event); err != nil {
 		log.Fatalln("Failed to parse message", err)
 	}
+
+	if err := event.Create(); err != nil {
+		log.Fatalln("Failed to insert event", err)
+	}
 }
