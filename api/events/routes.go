@@ -31,7 +31,7 @@ func Create(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, &response{Ok: true})
+	return c.JSON(http.StatusAccepted, &response{Ok: true})
 }
 
 type response struct {
