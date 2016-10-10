@@ -9,12 +9,19 @@ import (
 )
 
 func Index(c echo.Context) error {
-	return nil
+	name := c.QueryParam("name")
+	query := models.Query{name}
+
+	err, result := models.Search(query)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, result)
 }
 
 func Create(c echo.Context) error {
 	event := &models.Event{}
-
 	if err := c.Bind(event); err != nil {
 		return err
 	}

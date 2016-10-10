@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"github.com/rafaeljesus/event-tracker/lib/elastic"
+	client "gopkg.in/olivere/elastic.v3"
 	"time"
 )
 
@@ -27,4 +28,28 @@ func (e *Event) Create() error {
 	}
 
 	return nil
+}
+
+func Search(q Query) (error, []Event) {
+	query := client.NewTermQuery("name", q.Name)
+	searchResult, err := elastic.Es.Search().
+		Index("events").
+		Query(query).
+		Sort("timestamp", false).
+		From(0).Size(10).
+		Do()
+
+	if err != nil {
+		return err, nil
+	}
+
+	var result []Event
+
+	for _, hit := range searchResult.Hits.Hits {
+		var event Event
+		json.Unmarshal(*hit.Source, &event)
+		result = append(result, event)
+	}
+
+	return nil, result
 }
