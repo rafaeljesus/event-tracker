@@ -3,6 +3,18 @@ machine:
     - docker
     - elasticsearch
 
+dependencies:
+  pre:
+    - "[[ -d ~/zookeeper-3.4.5 ]] || ( curl -L -o ~/zookeeper.tar.gz 'http://mirror.cogentco.com/pub/apache/zookeeper/current/zookeeper-3.4.5.tar.gz' && tar -xz -C ~ -f ~/zookeeper.tar.gz )"
+    - "[[ -d ~/kafka_2.8.0-0.8.0 ]] || ( curl -L -o ~/kafka.tar.gz 'http://mirror.metrocast.net/apache/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz' && tar -xz -C ~ -f ~/kafka.tar.gz )"
+    - cp ~/zookeeper-3.4.5/conf/zoo_sample.cfg ~/zookeeper-3.4.5/conf/zoo.cfg
+    - ~/zookeeper-3.4.5/bin/zkServer.sh start
+    - ~/kafka_2.8.0-0.8.0/bin/kafka-server-start.sh  ~/kafka_2.8.0-0.8.0/config/server.properties: { background: true }
+    - sleep 5
+  cache_directories:
+    - "~/zookeeper-3.4.5"
+    - "~/kafka_2.8.0-0.8.0"
+
 test:
   override:
     - go test -v -race ./api/...
