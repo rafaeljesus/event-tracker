@@ -8,11 +8,11 @@ import (
 )
 
 type Event struct {
-	Cid       int             `json:"cid"`
-	Name      string          `json:"name"`
-	Status    string          `json:"status"`
-	Payload   json.RawMessage `json:"payload"`
-	Timestamp time.Time       `json:"timestamp,omitempty"`
+	Cid       int              `json:"cid"`
+	Name      string           `json:"name"`
+	Status    string           `json:"status"`
+	Payload   *json.RawMessage `json:"payload"`
+	Timestamp time.Time        `json:"timestamp,omitempty"`
 }
 
 func (e *Event) Create() error {
