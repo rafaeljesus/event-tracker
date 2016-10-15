@@ -1,6 +1,7 @@
 machine:
   services:
     - docker
+    - elasticsearch
 
 test:
   override:
