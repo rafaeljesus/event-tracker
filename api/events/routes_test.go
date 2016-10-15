@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/rafaeljesus/event-tracker/lib/elastic"
+	"github.com/rafaeljesus/event-tracker/lib/kafka"
 	"github.com/rafaeljesus/event-tracker/models"
 )
 
@@ -30,6 +31,7 @@ func TestMain(m *testing.M) {
 
 func beforeEach() {
 	elastic.Connect()
+	kafka.Connect()
 	event := newEvent()
 	if err := event.Create(); err != nil {
 		log.Fatalln(err)
