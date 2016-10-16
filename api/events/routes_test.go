@@ -13,6 +13,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Shopify/sarama/mocks"
 	"github.com/rafaeljesus/event-tracker/lib/elastic"
 	"github.com/rafaeljesus/event-tracker/lib/kafka"
 	"github.com/rafaeljesus/event-tracker/models"
@@ -60,6 +61,8 @@ func TestIndex(t *testing.T) {
 
 func TestCreate(t *testing.T) {
 	e := echo.New()
+	producer := mocks.NewSyncProducer(t, nil)
+
 	req, _ := http.NewRequest(echo.POST, "/v1/events", strings.NewReader(requestJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
@@ -68,6 +71,7 @@ func TestCreate(t *testing.T) {
 
 	if assert.NoError(t, Create(ctx)) {
 		assert.Equal(t, http.StatusAccepted, rec.Code)
+		producer.ExpectSendMessageAndSucceed()
 	}
 }
 
