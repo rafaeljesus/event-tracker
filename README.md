@@ -4,6 +4,10 @@
 * A minimal docker container
 * Automatically pushes it to dockerhub if tests pass
 
+<p align='center'>
+  <img src='https://github.com/rafaeljesus/event-tracker/blob/master/architecture.jpg'>
+</p>
+
 ## Setup
 Env vars
 ```bash
