@@ -5,11 +5,11 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/stretchr/testify/assert"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -20,8 +20,7 @@ import (
 )
 
 const (
-	eventName   = "order_created"
-	requestJSON = `{"name":"order_created", "payload": {}}`
+	requestJSON = `{"cid":1, "status":"ok", "name":"order_created", "payload": {}}`
 )
 
 func TestMain(m *testing.M) {
@@ -33,16 +32,17 @@ func TestMain(m *testing.M) {
 func beforeEach() {
 	elastic.Connect()
 	kafka.Connect()
-	event := newEvent()
-	if err := event.Create(); err != nil {
-		log.Fatalln(err)
-	}
 }
 
 func TestIndex(t *testing.T) {
+	event := newEvent()
+	event.Create()
+
 	e := echo.New()
 	q := make(url.Values)
-	q.Set("name", eventName)
+	q.Set("cid", strconv.Itoa(event.Cid))
+	q.Set("name", event.Name)
+	q.Set("status", event.Status)
 
 	req, _ := http.NewRequest(echo.GET, "/v1/events/?"+q.Encode(), nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -80,7 +80,9 @@ func newEvent() *models.Event {
 	Payload := (*json.RawMessage)(&payload)
 
 	return &models.Event{
-		Name:    eventName,
+		Cid:     1,
+		Status:  "ok",
+		Name:    "order_created",
 		Payload: Payload,
 	}
 }

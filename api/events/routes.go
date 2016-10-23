@@ -9,8 +9,10 @@ import (
 )
 
 func Index(c echo.Context) error {
+	cid := c.QueryParam("cid")
 	name := c.QueryParam("name")
-	query := models.Query{name}
+	status := c.QueryParam("status")
+	query := models.Query{cid, name, status}
 
 	err, result := models.Search(query)
 	if err != nil {

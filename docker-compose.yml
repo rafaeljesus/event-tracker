@@ -30,7 +30,7 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     ports:
-      - "9092:9092"
+      - "9093:9092"
     links:
       - zookeeper:zk
 

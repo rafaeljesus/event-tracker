@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-var brokers = []string{"localhost:9092"}
+var brokers = []string{"localhost:9093"}
 var Producer sarama.SyncProducer
 var Consumer sarama.Consumer
 

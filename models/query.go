@@ -1,5 +1,6 @@
 package models
 
 type Query struct {
-	Name string
+	Cid          string
+	Name, Status string
 }

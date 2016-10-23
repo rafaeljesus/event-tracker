@@ -31,18 +31,24 @@ func (e *Event) Create() error {
 }
 
 func Search(q Query) (error, []Event) {
-	query := client.NewTermQuery("name", q.Name)
-	searchResult, err := elastic.Es.Search().
-		Index("events").
-		Query(query).
-		Sort("timestamp", false).
+	query := buildQuery(q)
+
+	searchResult, err := query.
+		Sort("timestamp", true).
 		From(0).Size(10).
+		Pretty(true).
 		Do()
 
 	if err != nil {
 		return err, nil
 	}
 
+	result := parseResult(searchResult)
+
+	return nil, result
+}
+
+func parseResult(searchResult *client.SearchResult) []Event {
 	var result []Event
 
 	for _, hit := range searchResult.Hits.Hits {
@@ -51,5 +57,26 @@ func Search(q Query) (error, []Event) {
 		result = append(result, event)
 	}
 
-	return nil, result
+	return result
+}
+
+func buildQuery(q Query) *client.SearchService {
+	index := elastic.Es.Search().Index("events")
+
+	if q.Cid != "" {
+		cid := client.NewTermQuery("cid", q.Cid)
+		index.Query(cid)
+	}
+
+	if q.Name != "" {
+		name := client.NewTermQuery("name", q.Name)
+		index.Query(name)
+	}
+
+	if q.Status != "" {
+		status := client.NewTermQuery("status", q.Status)
+		index.Query(status)
+	}
+
+	return index
 }
